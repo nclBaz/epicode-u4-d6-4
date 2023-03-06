@@ -9,8 +9,11 @@ import filesRouter from "./api/files/index.js"
 import { genericErrorHandler, badRequestHandler, unauthorizedHandler, notfoundHandler } from "./errorsHandlers.js"
 
 const server = Express()
-const port = 3001
+const port = process.env.PORT || 3001
 const publicFolderPath = join(process.cwd(), "./public")
+
+console.log(process.env.MONGO_URL)
+console.log(process.env.SECRET)
 
 // ************************** GLOBAL MIDDLEWARES *********************
 
@@ -28,6 +31,8 @@ server.use(badRequestHandler) // 400
 server.use(unauthorizedHandler) // 401
 server.use(notfoundHandler) // 404
 server.use(genericErrorHandler) // 500 (this should ALWAYS be the last one)
+
+// mongo.connect(process.env.MONGO_URL)
 
 server.listen(port, () => {
   console.table(listEndpoints(server))
